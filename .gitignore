@@ -1,0 +1,39 @@
+# Environment files and local secrets
+.env
+.env.*
+!.env.example
+
+# Python bytecode and test/type-check caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.pytest-tmp/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments and package/build output
+.venv/
+venv/
+env/
+build/
+dist/
+wheels/
+*.egg-info/
+
+# Local runtime state and logs
+*.sqlite
+*.sqlite-*
+*.db
+*.log
+
+# Editor and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Generated project archive
+/codex-agent.zip

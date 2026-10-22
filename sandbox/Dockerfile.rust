@@ -1,0 +1,7 @@
+FROM rust:1-bookworm
+
+ENV CARGO_HOME=/opt/packages/cargo \
+    PATH="/opt/packages/cargo/bin:$PATH"
+
+WORKDIR /workspace
+CMD ["rustc", "--version"]
