@@ -1,5 +1,6 @@
 """FastMCP tools for operating on the current project workspace."""
 
+import csv
 import json
 import os
 import shlex
@@ -167,6 +168,37 @@ def workspace_create_file(path: str, content: str) -> str:
     with target.open("x", encoding="utf-8", newline="") as file:
         file.write(content)
     return f"Created {target.relative_to(WORKSPACE_ROOT).as_posix()}"
+
+
+@mcp.tool
+def workspace_create_csv(
+    path: str,
+    headers: list[str],
+    rows: list[list[str | int | float | bool | None]],
+) -> dict[str, object]:
+    """Create a new CSV file and return a small table preview."""
+    target = _resolve_path(path)
+    if target.suffix.lower() != ".csv":
+        raise ValueError("CSV file paths must end with .csv.")
+    if not headers or any(not header.strip() for header in headers):
+        raise ValueError("Provide one or more non-empty column headers.")
+    if len(set(headers)) != len(headers):
+        raise ValueError("CSV column headers must be unique.")
+    if any(len(row) != len(headers) for row in rows):
+        raise ValueError("Each CSV row must contain one value per header.")
+
+    target.parent.mkdir(parents=True, exist_ok=True)
+    with target.open("x", encoding="utf-8-sig", newline="") as csv_file:
+        writer = csv.writer(csv_file)
+        writer.writerow(headers)
+        writer.writerows(rows)
+
+    return {
+        "path": target.relative_to(WORKSPACE_ROOT).as_posix(),
+        "headers": headers,
+        "preview": rows[:10],
+        "row_count": len(rows),
+    }
 
 
 @mcp.tool

@@ -26,7 +26,7 @@ The main agent coordinates these specialists and has the same workspace tools. T
 
 The workspace MCP server provides:
 
-- Workspace file read, create, write, rename, confirmed file deletion, glob search, and code search.
+- Workspace file read, create, write, rename, confirmed file deletion, glob search, and code search. CSV exports create a new `.csv` file and show a table preview.
 - Docker-sandboxed Python, JavaScript/TypeScript, Java, Go, Rust, C, and C++ execution through `run_project_file` and `run_project_command`.
 - Project dependency installation for Python, Node.js, Maven/Gradle, Go, and Rust manifests.
 - Package installation for Python, npm, Go, Cargo, and Maven ecosystems. Installed tools and package caches persist in Docker volumes.

@@ -107,6 +107,19 @@ def render_tool_card(
         path = _short((args or {}).get("path", "file"), 100)
         line_count = len(str((args or {}).get("content", "")).splitlines())
         parts.append(Text(f"Wrote {path} ({line_count} lines)", style=SUCCESS))
+    elif name == "workspace_create_csv" and isinstance(parsed, dict):
+        headers = parsed.get("headers", [])
+        rows = parsed.get("preview", [])
+        table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold")
+        for header in headers:
+            table.add_column(_short(header, 60), overflow="fold")
+        for row in rows:
+            table.add_row(*[_short(value, 100) for value in row])
+        parts.append(Text(f"Created {parsed.get('path', 'CSV file')}", style=SUCCESS))
+        parts.append(table)
+        row_count = parsed.get("row_count", len(rows))
+        if row_count > len(rows):
+            parts.append(Text(f"Showing {len(rows)} of {row_count} rows", style=MUTED))
     elif name in {"workspace_list_files", "workspace_search_files"}:
         entries = parsed if isinstance(parsed, list) else str(parsed).splitlines()
         parts.extend(

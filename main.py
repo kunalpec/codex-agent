@@ -320,6 +320,11 @@ async def main(workspace: Path | None = None, debug: bool = False) -> None:
     try:
         async with create_mcp_client(workspace) as mcp_client:
             tools = await mcp_client.list_tools()
+            if _tool_by_name(tools, "workspace_create_csv") is None:
+                console.print(
+                    "CSV export tool is unavailable. Restart or update codex-agent.",
+                    style=WARNING,
+                )
             check_docker_tool = _tool_by_name(tools, "check_docker")
             try:
                 docker_status = await _call_tool(check_docker_tool)
